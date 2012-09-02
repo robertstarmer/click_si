@@ -2,11 +2,15 @@
 
 # Libraries:::::::::::::::::::::::::::::::::::::::::::::::::::::::
 require 'rubygems'
-require 'sinatra/base'
-require 'redis'
+#require 'redis'
+require 'em-hiredis'
+#require 'sinatra/base'
+require 'sinatra/async'
 require 'slim'
 require 'sass'
 require 'coffee-script'
+
+STDOUT.sync = true
 
 # Application:::::::::::::::::::::::::::::::::::::::::::::::::::
 class SassHandler < Sinatra::Base
@@ -33,28 +37,49 @@ class Click < Sinatra::Base
     use SassHandler
     use CoffeeHandler
     # register Async process
-    #register Sinatra::Async
+    register Sinatra::Async
 
     # Configuration:::::::::::::::::::::::::::::::::::::::::::::::
     set :public_folder, File.dirname(__FILE__) + '/public'
     set :views, File.dirname(__FILE__) + '/templates'
     
     # Redis Setup:::::::::::::::::::::::::::::::::::::::::::::::::
-    redis = Redis.new
+    # redis = Redis.new
 
+    # pub/sub...
+ #   redis = EM::Hiredis.connect
+ #   subscriber = EM::Hiredis.connect
+
+    def connect!
+        puts "connecting to redis"
+        EM::Hiredis.connect
+    end
+
+    def redis
+        @@redis ||= connect!
+    end
+
+    def subscribe!
+        puts "subscribing to redis"
+        EM::Hiredis.connect
+    end
+
+    def subscriber
+        @@subscriber ||= subscribe!
+    end
 
     # Route Handlers::::::::::::::::::::::::::::::::::::::::::::::
     get '/' do
         slim :index
     end
 
-    get('/new') do
+    aget('/new') do
         key = 'test'
-        redis.incr(key)
-        "Hello %s" % redis.get(key).to_s
+        redis.incr(key) do
+            redis.get(key) { |r| body "Hello #{r}" }
+        end
     end
-
-        
+ 
 end
 
 if __FILE__ == $0
