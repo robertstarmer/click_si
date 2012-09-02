@@ -1,0 +1,3 @@
+require './click'
+
+run Click

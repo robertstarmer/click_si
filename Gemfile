@@ -1,15 +1,16 @@
 source 'https://rubygems.org'
 
 gem 'sass'
-
-gem 'redis'
+gem 'em-hiredis'
+# gem 'redis'
 gem 'amqp'
-
+gem 'shotgun'
 gem 'coffee-script'
 
 gem 'therubyracer', :platforms => :ruby
 
 gem 'thin'
-gem 'sinatra'
+# gem 'sinatra'
+gem 'async_sinatra'
 gem 'slim'
 gem 'execjs'

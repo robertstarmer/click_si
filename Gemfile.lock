@@ -9,21 +9,28 @@ GEM
       amq-client (~> 0.9.4)
       amq-protocol (>= 0.9.4)
       eventmachine
+    async_sinatra (1.0.0)
+      rack (>= 1.4.1)
+      sinatra (>= 1.3.2)
     coffee-script (2.2.0)
       coffee-script-source
       execjs
     coffee-script-source (1.3.3)
     daemons (1.1.9)
+    em-hiredis (0.1.1)
+      hiredis (~> 0.4.0)
     eventmachine (0.12.10)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    hiredis (0.4.5)
     libv8 (3.3.10.4)
     multi_json (1.3.6)
     rack (1.4.1)
     rack-protection (1.2.0)
       rack
-    redis (3.0.1)
     sass (3.2.1)
+    shotgun (0.9)
+      rack (>= 1.0)
     sinatra (1.3.3)
       rack (~> 1.3, >= 1.3.6)
       rack-protection (~> 1.2)
@@ -45,11 +52,12 @@ PLATFORMS
 
 DEPENDENCIES
   amqp
+  async_sinatra
   coffee-script
+  em-hiredis
   execjs
-  redis
   sass
-  sinatra
+  shotgun
   slim
   therubyracer
   thin
