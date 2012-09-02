@@ -1,8 +1,9 @@
 source 'https://rubygems.org'
 
 gem 'sass'
-gem 'em-hiredis'
-# gem 'redis'
+#gem 'hiredis'
+# gem 'em-hiredis'
+gem 'redis'
 gem 'amqp'
 gem 'shotgun'
 gem 'coffee-script'
