@@ -77,8 +77,7 @@ class Click < Sinatra::Base
         key = 'button-1'
         redis.incr(key) do
             redis.get(key) { |r| body "Hello #{r}" }
-            #redis.publish(key, r)
-            redis.publish(key, redis.get(key) { |r| body "#{r}"} )
+            redis.get(key) { |r| redis.publish(key, r)}
         end
     end
  
