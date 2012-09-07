@@ -15,7 +15,7 @@ STDOUT.sync = true
 # Application:::::::::::::::::::::::::::::::::::::::::::::::::::
 class SassHandler < Sinatra::Base
     
-    set :views, File.dirname(__FILE__) + '/templates/sass'
+    set :views, File.dirname(__FILE__) + '/views/sass'
     
     get '/css/*.css' do
         filename = params[:splat].first
@@ -25,7 +25,7 @@ class SassHandler < Sinatra::Base
 end
 
 class CoffeeHandler < Sinatra::Base
-    set :views, File.dirname(__FILE__) + '/templates/coffee'
+    set :views, File.dirname(__FILE__) + '/views/coffee'
     
     get "/js/*.js" do
         filename = params[:splat].first
@@ -41,7 +41,7 @@ class Click < Sinatra::Base
 
     # Configuration:::::::::::::::::::::::::::::::::::::::::::::::
     set :public_folder, File.dirname(__FILE__) + '/public'
-    set :views, File.dirname(__FILE__) + '/templates'
+    set :views, File.dirname(__FILE__) + '/views'
     
     # Redis Setup:::::::::::::::::::::::::::::::::::::::::::::::::
     # redis = Redis.new
@@ -74,13 +74,21 @@ class Click < Sinatra::Base
     end
 
     aget('/new') do
-        key = 'button-1'
+        button_id = 1
+        key = "button:#{button_id}:"+Time.now.to_i.to_s
         redis.incr(key) do
             redis.get(key) { |r| body "Hello #{r}" }
             redis.get(key) { |r| redis.publish(key, r)}
         end
     end
- 
+
+    aget '/sub' do
+        button_id = 1
+        subscriber.psubscribe("button:#{button_id}:*")
+        subscriber.on(:pmessage) { |key, channel, message|
+            body "Got #{key}, #{channel}, #{message}"
+        }
+    end
 end
 
 if __FILE__ == $0
