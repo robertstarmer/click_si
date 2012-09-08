@@ -86,7 +86,7 @@ class Click < Sinatra::Base
         button_id = 1
         subscriber.psubscribe("button:#{button_id}:*")
         subscriber.on(:pmessage) { |key, channel, message|
-            body "Got #{key}, #{channel}, #{message}"
+            body "Got #{channel}"
         }
     end
 end

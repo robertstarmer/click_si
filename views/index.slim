@@ -3,23 +3,29 @@ html
 	head
 		title A quick page
 		script src="js/jquery.min.js" type="text/javascript"
-		script src="js/bootstrap-responsive.min.js" type="text/javascript"
+		script src="js/bootstrap.min.js" type="text/javascript"
 		script src="/js/subscribe.js" type="text/javascript"
+
+		meta name="viewport" content="width=device-width, initial-scale=1.0"
+		
 		link href="css/bootstrap.min.css" rel="stylesheet"
 
 	body
 		h1 Examples
 
-		div class="span4"
-			div id="button"
-				button 
-					div id="button_text" Hello
-		div class="span4"
-			div id="subscribe"
+		div class="row-fluid"
+			div class="span6"
+				div id="button"
+					button class="btn btn-large btn-block btn-primary"
+						div id="button_text" Hello
+			div class="span6"
+				span class="input-xlarge uneditable-input"
+					div id="subscribe"
 
 javascript:
 	$(document).ready(function(){ 
 		$("#button").click(function(){
 			$("#button_text").load('/new');
+			$("#subscribe").load('/sub');
 		});
 	});
